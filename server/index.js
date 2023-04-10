@@ -49,28 +49,34 @@ app.post('/register', async (req,res) => {
 app.post('/login', async (req,res) => {
   const {username,password} = req.body;
   const userDoc = await User.findOne({username});
-  const passOk = bcrypt.compareSync(password, userDoc.password);
-  if (passOk) {
-    // logged in
-    jwt.sign({username,id:userDoc._id}, secret, {}, (err,token) => {
-      if (err) throw err;
-      res.cookie('token', token).json({
-        id:userDoc._id,
-        username,
-      });
-    });
-  } else {
-    res.status(400).json('wrong credentials');
-  }
+  const token = jwt.sign({ username,id:userDoc._id}, secret, token );
+  console.log(token);
+  res.json({jwt: token});
+
+  // const passOk = bcrypt.compareSync(password, userDoc.password);
+  // if (passOk) {
+  //   // logged in
+  //   jwt.sign({username,id:userDoc._id}, secret, {}, (err,token) => {
+  //     console.log(token)
+  //     if (err) throw err;
+  //     res.cookie('token', token).json({
+  //       id:userDoc._id,
+  //       username,
+  //     });
+  //   });
+  // } else {
+  //   res.status(400).json('wrong credentials');
+  // }
 });
 
-app.get('/profile', (req,res) => {
-  const {token} = req.cookies;
-  jwt.verify(token, secret, {}, (err,info) => {
-    if (err) throw err;
-    res.json(info);
-  });
-});
+// app.get('/profile', (req,res) => {
+//   const {token} = req.token;
+//   jwt.verify(token, secret, {}, (err,info) => {
+//     if (err) throw err;
+//     res.json(info);
+//   });
+// });
+
 
 app.post('/logout', (req,res) => {
   res.cookie('token', '').json('ok');
@@ -83,8 +89,9 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
   const newPath = path+'.'+ext;
   fs.renameSync(path, newPath);
 
-  const {token} = req.cookies;
-  jwt.verify(token, secret, {}, async (err,info) => {
+
+  const {token} = req.token;
+  jwt.verify(token, secret, async (err,info) => {
     if (err) throw err;
     const {title,summary,content} = req.body;
     const postDoc = await Post.create({
@@ -110,8 +117,8 @@ app.put('/post/:id',uploadMiddleware.single('file'), async (req,res) => {
     fs.renameSync(path, newPath);
   }
 
-  const {token} = req.cookies;
-  jwt.verify(token, secret, {}, async (err,info) => {
+  const {token} = req.token;
+  jwt.verify(token, secret, async (err,info) => {
     if (err) throw err;
     const {id,title,summary,content} = req.body;
     const updatePost = await Post.findByIdAndUpdate(req.params.id);
@@ -145,6 +152,15 @@ app.get('/post/:id', async (req, res) => {
   const postDoc = await Post.findById(id).populate('author', ['username']);
   res.json(postDoc);
 })
+
+
+app.delete('/post/:id', async (req, res) => {
+  const {id} = req.params;
+  const postDoc = await Post.findById(id).populate('author', ['username']);
+  res.json(postDoc);
+})
+
+
 
 app.listen(4000, () => {
   console.log("Server is running on port 4000")
