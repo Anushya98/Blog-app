@@ -39,5 +39,6 @@ export default function PostPage() {
       </div>
       <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
     </div>
+   
   );
 }

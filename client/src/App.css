@@ -50,6 +50,7 @@ div.Post{
     grid-template-columns:1fr ;
     margin-bottom: 25px;
     gap: 25px;
+    border: 2px dotted darksalmon;
       }
 
 /*div.Post:nth-child(even) {
@@ -120,8 +121,10 @@ form h1{
 }
  div.image{
     
-    display: block;
+   justify-content: center;
     overflow:hidden;
+    width: 70%;
+    height: 60%;
 }
 div.post-page div.image img{
     object-fit: cover;
@@ -177,4 +180,7 @@ div.post-page a.edit-btn{
 }
 a svg{
     height:20px;
+}
+form.post{
+    margin:50px 300px;
 }

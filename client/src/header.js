@@ -27,14 +27,14 @@ export default function Header() {
   return (
     <header>
       <div className="home">
-          <img  className="photo" src="https://plus.unsplash.com/premium_photo-1677706393601-446864b42ab0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGxldHRlciUyMGF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"/>
+          <img  className="photo" src="https://plus.unsplash.com/premium_photo-1677706393601-446864b42ab0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGxldHRlciUyMGF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60" alt=""/>
           <Link to ="/" className='logo'>BLOGS</Link>
           </div>
       <nav>
         {username && (
           <>
             <Link to="/create">Create new post</Link>
-            <a onClick={logout}>Logout ({username})</a>
+            <a onClick={logout} href="/login">Logout ({username})</a>
           </>
         )}
         {!username && (

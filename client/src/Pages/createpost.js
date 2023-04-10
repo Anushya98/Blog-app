@@ -31,7 +31,7 @@ export default function Createpost() {
     return <Navigate to={'/'} /> 
   }
     return(
-<form onSubmit={createNewPost}>
+<form className='post' onSubmit={createNewPost}>
       <input type="title"
              placeholder={'Title'}
              value={title}
@@ -43,7 +43,7 @@ export default function Createpost() {
       <input type="file"
              onChange={ev => setFiles(ev.target.files)} />
             <Editor value={content} onChange={setContent} />
-    <button style={{marginTop:'10px'}}>CREATE POST</button>
+    <button style={{marginTop:'10px', width:'25%', marginLeft:'35%'}}>CREATE POST</button>
 </form>
     );
 }

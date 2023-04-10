@@ -1,7 +1,9 @@
 import { useState } from "react"
+import {Navigate} from "react-router-dom";
 export default function Registerpage(){
     const [username,setUsername]=useState('');
     const [password,setPassword]=useState('');
+    const [redirect,setRedirect] = useState(false);
     async function register(ev) {
         ev.preventDefault();
         const response = await fetch('http://localhost:4000/register', {
@@ -11,10 +13,13 @@ export default function Registerpage(){
         });
         if (response.status === 200) {
             alert('registration successful');
+            setRedirect(true)
           } else {
-            alert('registration failed');
+            alert('Already have an account or not successful');
           }
     }
+    if (redirect) {
+    return <Navigate to={'/login'} /> }
     return(
         <form className="Register" onSubmit={register}>
             <h1>REGISTER</h1>
